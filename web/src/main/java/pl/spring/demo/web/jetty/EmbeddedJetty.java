@@ -1,6 +1,9 @@
 package pl.spring.demo.web.jetty;
 
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.session.HashSessionIdManager;
+import org.eclipse.jetty.server.session.HashSessionManager;
+import org.eclipse.jetty.server.session.SessionHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.slf4j.Logger;
@@ -30,6 +33,7 @@ public class EmbeddedJetty {
     private void startJetty(int port) throws Exception {
         Server server = new Server(port);
         server.setHandler(getServletContextHandler(getContext()));
+        server.setSessionIdManager(new HashSessionIdManager());
         server.start();
         logger.info("Server started at port {}", port);
         server.join();
@@ -38,6 +42,7 @@ public class EmbeddedJetty {
     private static ServletContextHandler getServletContextHandler(WebApplicationContext context) throws IOException {
         ServletContextHandler contextHandler = new ServletContextHandler();
         contextHandler.setErrorHandler(null);
+        contextHandler.setSessionHandler(new SessionHandler(new HashSessionManager()));
         contextHandler.setContextPath(CONTEXT_PATH);
         contextHandler.addServlet(new ServletHolder(new DispatcherServlet(context)), MAPPING_URL);
         contextHandler.addEventListener(new ContextLoaderListener(context));
