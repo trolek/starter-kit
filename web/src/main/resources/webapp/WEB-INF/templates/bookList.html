@@ -3,14 +3,20 @@
 <head lang="en">
     <meta charset="UTF-8"/>
     <title>Lista książek</title>
+    <link rel="stylesheet" th:href="@{/static/application.css}" href="/static/application.css" />
 </head>
 <body>
+    <p class="alert alert-danger" th:if="${danger != null}" th:text="${danger}"></p>
+    <p class="alert alert-warning" th:if="${warning != null}" th:text="${warning}"></p>
+    <p class="alert alert-success" th:if="${success != null}" th:text="${success}"></p>
+    <p class="alert alert-info" th:if="${info != null}" th:text="${info}"></p>
     <table>
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Tytuł</th>
                 <th>Autor</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -18,6 +24,11 @@
                 <td th:text="${book.id}">Id</td>
                 <td th:text="${book.title}">title</td>
                 <td th:text="${book.authors}">autors</td>
+                <td>
+                    <form method="post" th:action="@{/books/{id}(id=${book.id})}">
+                        <input type="submit" name="removeBook" value="Usuń" />
+                    </form>
+                </td>
             </tr>
         </tbody>
     </table>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head lang="en">
+    <meta charset="UTF-8" />
+    <title>Usunięto książkę</title>
+    <link rel="stylesheet" th:href="@{/static/application.css}" href="/static/application.css" />
+</head>
+<body>
+    <p
+        class="alert alert-success"
+        th:text="${bookTitle != null}
+            ? ('Książka o tytule &quot;' + ${bookTitle} + '&quot; została pomyślnie usunięta')
+            : 'Książka została pomyślnie usunięta'"
+    >Książka usunięta</p>
+    <p>
+        <a th:href="@{/books}">&#x1f4d6; Powrót do listy książek</a> |
+        <a th:href="@{/home}">&#x2302; Powrót na stronę główną</a>
+    </p>
+</body>
+</html>

@@ -11,6 +11,8 @@ import pl.spring.demo.to.BookTo;
 
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 @Service
 @Transactional(readOnly = true)
 public class BookServiceImpl implements BookService {
@@ -34,10 +36,23 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public BookTo getOne(Long id) throws EntityNotFoundException {
+        return BookMapper.map(bookRepository.getOne(id));
+    }
+
+    @Override
     @Transactional(readOnly = false)
     public BookTo saveBook(BookTo book) {
         BookEntity entity = BookMapper.map(book);
         entity = bookRepository.save(entity);
         return BookMapper.map(entity);
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public void deleteBook(BookTo book) throws IllegalArgumentException {
+        BookEntity entity = BookMapper.map(book);
+        bookRepository.delete(entity);
     }
 }
